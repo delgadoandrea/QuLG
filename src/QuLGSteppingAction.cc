@@ -127,12 +127,31 @@ void QuLGSteppingAction::UserSteppingAction(const G4Step * theStep){
         //absorbed but status was Detection
         G4SDManager* SDman = G4SDManager::GetSDMpointer();
         G4String sdName="/QuLGDet/pmtSD";
+        G4cout << "Photon absorbed at the Photocathode " << sdName << G4endl;        
         G4cout << "sdname: " << sdName << G4endl;
         QuLGPMTSD* pmtSD = (QuLGPMTSD*)SDman->FindSensitiveDetector(sdName);
         if(pmtSD)pmtSD->ProcessHits_constStep(theStep, nullptr);
         trackInformation->AddTrackStatusFlag(hitPMT);
         }
     }
+
+        //if(thePostPoint->GetProcessDefinedStep()->GetProcessName()
+       //=="Transportation"){
+      //fEventAction->IncAbsorption();
+      //trackInformation->AddTrackStatusFlag(absorbed);
+      if(thePrePV->GetName() == "photocathode_phys" && thePostPV->GetName()!="photocathode_phys")
+        {
+        //Triger sensitive detector manually since photon is
+        //absorbed but status was Detection
+        G4SDManager* SDman = G4SDManager::GetSDMpointer();
+        G4String sdName="/HexLGDet/pmtSD";
+        G4cout << "sdname: " << sdName << G4endl;
+        QuLGPMTSD* pmtSD = (QuLGPMTSD*)SDman->FindSensitiveDetector(sdName);
+        if(pmtSD)pmtSD->ProcessHits_constStep(theStep, nullptr);
+        trackInformation->AddTrackStatusFlag(hitPMT);
+        theTrack->SetTrackStatus(fStopAndKill);
+        }
+    //}
 
     boundaryStatus=boundary->GetStatus();
 
@@ -163,6 +182,7 @@ void QuLGSteppingAction::UserSteppingAction(const G4Step * theStep){
         //absorbed but status was Detection
         G4SDManager* SDman = G4SDManager::GetSDMpointer();
         G4String sdName="/QuLGDet/pmtSD";
+        G4cout << "Photon absorbed at boundary! " << G4endl;        
         G4cout << "sdname: " << G4endl;
         QuLGPMTSD* pmtSD = (QuLGPMTSD*)SDman->FindSensitiveDetector(sdName);
         if(pmtSD)pmtSD->ProcessHits_constStep(theStep, nullptr);
@@ -179,6 +199,7 @@ void QuLGSteppingAction::UserSteppingAction(const G4Step * theStep){
         //absorbed but status was Detection
         G4SDManager* SDman = G4SDManager::GetSDMpointer();
         G4String sdName="/QuLGDet/pmtSD";
+        G4cout << "Photon detected at boundary! " << G4endl;                
         G4cout << "sdname: " << G4endl;
         QuLGPMTSD* pmtSD = (QuLGPMTSD*)SDman->FindSensitiveDetector(sdName);
         if(pmtSD)pmtSD->ProcessHits_constStep(theStep, nullptr);
