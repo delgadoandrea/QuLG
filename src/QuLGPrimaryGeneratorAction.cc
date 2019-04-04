@@ -26,7 +26,7 @@ QuLGPrimaryGeneratorAction::QuLGPrimaryGeneratorAction(){
   //Default energy,position,momentum
   fParticleGun->SetParticleEnergy(3.2*eV);
   fParticleGun->SetParticlePosition(G4ThreeVector(0.0 , 0.0, .0*cm));
-  fParticleGun->SetParticleMomentumDirection(G4ThreeVector(0.,0.,1.));
+  fParticleGun->SetParticleMomentumDirection(G4ThreeVector(0.,1.,0.));
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
