@@ -14,15 +14,6 @@
 #include "G4ParticleDefinition.hh"
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-
-//QuLGPMTSD::QuLGPMTSD(G4String name)
-//  : G4VSensitiveDetector(name),fPMTHitCollection(nullptr),
-//    fPMTPositionsX(nullptr),fPMTPositionsY(nullptr),fPMTPositionsZ(nullptr)
-//{
-//  collectionName.insert("pmtHitCollection");
-//}
-
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 QuLGPMTSD::QuLGPMTSD(G4String name)
   : G4VSensitiveDetector(name),fPMTHitCollection(nullptr)
 //    fPMTPositionsX(nullptr),fPMTPositionsY(nullptr),fPMTPositionsZ(nullptr)
@@ -33,26 +24,6 @@ QuLGPMTSD::QuLGPMTSD(G4String name)
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 QuLGPMTSD::~QuLGPMTSD() {}
-
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-
-/*void QuLGPMTSD::SetPmtPositions(const std::vector<G4ThreeVector>& positions)
-{
-  for (G4int i=0; i<G4int(positions.size()); ++i) {
-    if(fPMTPositionsX)fPMTPositionsX->push_back(positions[i].x());
-    if(fPMTPositionsY)fPMTPositionsY->push_back(positions[i].y());
-    if(fPMTPositionsZ)fPMTPositionsZ->push_back(positions[i].z());
-  }
-}
-
-void QuLGPMTSD::SetPmtPositions(const std::vector<G4ThreeVector>& positions)
-{
-  for (G4int i=0; i<G4int(positions.size()); ++i) {
-    if(fPMTPositionsX)fPMTPositionsX->push_back(positions[i].x());
-    if(fPMTPositionsY)fPMTPositionsY->push_back(positions[i].y());
-    if(fPMTPositionsZ)fPMTPositionsZ->push_back(positions[i].z());
-  }
-}*/
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 

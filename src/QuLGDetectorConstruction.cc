@@ -48,20 +48,6 @@ QuLGDetectorConstruction::QuLGDetectorConstruction()
   fGunPosX = 0.0;
   fGunPosY = 0.0;
   fDetectorMessenger = new QuLGDetectorMessenger(this);
-  /*fExperimentalHall_box = nullptr;
-  fExperimentalHall_log = nullptr;
-  fExperimentalHall_phys = nullptr;
-
-  fLXe = fAl = fAir = fVacuum = fGlass = nullptr;
-  fPstyrene = fPMMA = fPethylene1 = fPethylene2 = nullptr;
-
-  fN = fO = fC = fH = nullptr;
-
-  fSaveThreshold = 0;
-  SetDefaults();
-
-  DefineMaterials();
-  fDetectorMessenger = new QuLGDetectorMessenger(this);*/
 
 }
 
@@ -417,20 +403,20 @@ void QuLGDetectorConstruction::ConstructSDandField() {
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 void QuLGDetectorConstruction::SetGunPosX(G4double ival)
 {
-  if(ival < 1){
-    G4cout << "\n ---> Warning for SetGunPosX: Not set!" << G4endl;
-    return;
-  }
+  //if(ival < 1){
+  //  G4cout << "\n ---> Warning for SetGunPosX: Not set!" << G4endl;
+  //  return;
+  //}
   fGunPosX = ival;
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 void QuLGDetectorConstruction::SetGunPosY(G4double ival)
 {
-  if(ival < 1){
-    G4cout << "\n ---> Warning for SetGunPosY: Not set!" << G4endl;
-    return;
-  }
+  //if(ival < 1){
+  //  G4cout << "\n ---> Warning for SetGunPosY: Not set!" << G4endl;
+  //  return;
+  //}
   fGunPosY = ival;
 }
 

@@ -28,16 +28,17 @@ QuLGDetectorMessenger::QuLGDetectorMessenger(QuLGDetectorConstruction* detector)
   fDimensionsCmd =
     new G4UIcmdWith3VectorAndUnit("/QuLG/detector/dimensions",this);
   fDimensionsCmd->SetGuidance("Set the dimensions of the detector volume.");
-  fDimensionsCmd->SetParameterName("scint_x","scint_y","scint_z",false);
   fDimensionsCmd->SetDefaultUnit("cm");
   fDimensionsCmd->AvailableForStates(G4State_PreInit,G4State_Idle);
   fDimensionsCmd->SetToBeBroadcasted(false);
 
-  fGunPosXCmd = new G4UIcmdWithADouble("/QuLG/detector/gunPosX", this);
+  fGunPosXCmd = new G4UIcmdWithADoubleAndUnit("/QuLG/detector/gunPosX", this);
+  fGunPosXCmd->SetDefaultUnit("cm");
   fGunPosXCmd->SetGuidance("Set particle gun x-position");
   fGunPosXCmd->AvailableForStates(G4State_PreInit,G4State_Idle);
 
-  fGunPosYCmd = new G4UIcmdWithADouble("/QuLG/detector/gunPosY", this);
+  fGunPosYCmd = new G4UIcmdWithADoubleAndUnit("/QuLG/detector/gunPosY", this);
+  fGunPosYCmd->SetDefaultUnit("cm");  
   fGunPosYCmd->SetGuidance("Set particle gun y-position");
   fGunPosYCmd->AvailableForStates(G4State_PreInit,G4State_Idle);
 }
