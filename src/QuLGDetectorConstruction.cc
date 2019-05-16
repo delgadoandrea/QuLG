@@ -1,4 +1,5 @@
 #include "QuLGDetectorConstruction.hh"
+#include "QuLGDetectorMessenger.hh"
 #include "MaterialsHelper.hh"
 #include "SurfacesHelper.hh"
 #include "QuLGPMTSD.hh"
@@ -44,6 +45,9 @@
 QuLGDetectorConstruction::QuLGDetectorConstruction()
 : G4VUserDetectorConstruction()//fLXe_mt(nullptr), fMPTPStyrene(nullptr)
 {
+  fGunPosX = 0.0;
+  fGunPosY = 0.0;
+  fDetectorMessenger = new QuLGDetectorMessenger(this);
   /*fExperimentalHall_box = nullptr;
   fExperimentalHall_log = nullptr;
   fExperimentalHall_phys = nullptr;
@@ -63,7 +67,9 @@ QuLGDetectorConstruction::QuLGDetectorConstruction()
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-QuLGDetectorConstruction::~QuLGDetectorConstruction() {}
+QuLGDetectorConstruction::~QuLGDetectorConstruction() {
+  delete fDetectorMessenger;
+}
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 G4VSolid* createOctagon(double height, double basesside_dia, double pmtside_dia, double wall_thick){
@@ -405,169 +411,27 @@ void QuLGDetectorConstruction::ConstructSDandField() {
    //It does however need to be attached to something or else it doesnt get
    //reset at the begining of events
 
-   //SetSensitiveDetector("photocathode_log", fPmt_SD.Get(),true); 
-
-   /*if(!fPmt_SD2.Get()){
-
-    G4cout << "Construction /QuLGDet/pmtSD2" << G4endl;
-     //G4MultiFunctionalDetector* photocathode_MFD = new G4MultiFunctionalDetector("photocathodeMFD");     
-    QuLGPMTSD* pmt_SD2 = new QuLGPMTSD("/QuLGDet/pmtSD2");
-     //photocathode_MFD->RegisterPrimitive(pmt_SD);
-     fPmt_SD2.Put(pmt_SD2);
-
-   }
-      G4SDManager::GetSDMpointer()->AddNewDetector(fPmt_SD2.Get());
-    SetSensitiveDetector("photocathode_log_2", fPmt_SD2.Get(),true);  */     
-
-  //if (!fMainVolume) return;
-
-  // // Scint SD
-
-  // if (!fScint_SD.Get()) {
-  //   G4cout << "Construction /LXeDet/scintSD" << G4endl;
-  //   LXeScintSD* scint_SD = new LXeScintSD("/LXeDet/scintSD");
-  //   fScint_SD.Put(scint_SD);
-  // }
-  // G4SDManager::GetSDMpointer()->AddNewDetector(fScint_SD.Get());
-  // SetSensitiveDetector(fMainVolume->GetLogScint(), fScint_SD.Get());
+   SetSensitiveDetector("photocathode_log", fPmt_SD.Get(),true); 
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-
-// void LXeDetectorConstruction::SetDimensions(G4ThreeVector dims) {
-//   fScint_x=dims[0];
-//   fScint_y=dims[1];
-//   fScint_z=dims[2];
-//   G4RunManager::GetRunManager()->ReinitializeGeometry();
-// }
- 
-// //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-
-// void LXeDetectorConstruction::SetHousingThickness(G4double d_mtl) {
-//   fD_mtl=d_mtl;
-//   G4RunManager::GetRunManager()->ReinitializeGeometry();
-// }
-
-// //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-
-// void LXeDetectorConstruction::SetNX(G4int nx) {
-//   fNx=nx;
-//   G4RunManager::GetRunManager()->ReinitializeGeometry();
-// }
-
-// //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-
-// void LXeDetectorConstruction::SetNY(G4int ny) {
-//   fNy=ny;
-//   G4RunManager::GetRunManager()->ReinitializeGeometry();
-// }
-
-// //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-
-// void LXeDetectorConstruction::SetNZ(G4int nz) {
-//   fNz=nz;
-//   G4RunManager::GetRunManager()->ReinitializeGeometry();
-// }
-
-// //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-
-// void LXeDetectorConstruction::SetPMTRadius(G4double outerRadius_pmt) {
-//   fOuterRadius_pmt=outerRadius_pmt;
-//   G4RunManager::GetRunManager()->ReinitializeGeometry();
-// }
-
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-
-void QuLGDetectorConstruction::SetDefaults() {
-
-  //TODO : Add hard-coded values here
-
-  //Resets to default values
-  // fD_mtl=0.0635*cm;
-
-  // fScint_x = 17.8*cm;
-  // fScint_y = 17.8*cm;
-  // fScint_z = 22.6*cm;
-
-  // fNx = 2;
-  // fNy = 2;
-  // fNz = 3;
-
-  // fOuterRadius_pmt = 2.3*cm;
-
-  // fSphereOn = true;
-  // fRefl = 1.0;
-
-  // fNfibers = 15;
-  // fWLSslab = false;
-  // fMainVolumeOn = true;
-  // fMainVolume = nullptr;
-  // fSlab_z = 2.5*mm;
-
-  // G4UImanager::GetUIpointer()
-  //   ->ApplyCommand("/LXe/detector/scintYieldFactor 1.");
-
-  // if(fLXe_mt)fLXe_mt->AddConstProperty("SCINTILLATIONYIELD",12000./MeV);
-  // if(fMPTPStyrene)fMPTPStyrene->AddConstProperty("SCINTILLATIONYIELD",10./keV);
-
+void QuLGDetectorConstruction::SetGunPosX(G4double ival)
+{
+  if(ival < 1){
+    G4cout << "\n ---> Warning for SetGunPosX: Not set!" << G4endl;
+    return;
+  }
+  fGunPosX = ival;
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-
-//void LXeDetectorConstruction::SetSphereOn(G4bool b) {
-//  fSphereOn=b;
-//  G4RunManager::GetRunManager()->ReinitializeGeometry();
-//}
-
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-
-//void LXeDetectorConstruction::SetHousingReflectivity(G4double r) {
-//  fRefl=r;
-//  G4RunManager::GetRunManager()->ReinitializeGeometry();
-//}
-
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-
-// void LXeDetectorConstruction::SetWLSSlabOn(G4bool b) {
-//   fWLSslab=b;
-//   G4RunManager::GetRunManager()->ReinitializeGeometry();
-// }
-
-// //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-
-// void LXeDetectorConstruction::SetMainVolumeOn(G4bool b) {
-//   fMainVolumeOn=b;
-//   G4RunManager::GetRunManager()->ReinitializeGeometry();
-// }
-
-// //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-
-// void LXeDetectorConstruction::SetNFibers(G4int n) {
-//   fNfibers=n;
-//   G4RunManager::GetRunManager()->ReinitializeGeometry();
-// }
-
-// //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-
-// void LXeDetectorConstruction::SetMainScintYield(G4double y) {
-//   fLXe_mt->AddConstProperty("SCINTILLATIONYIELD",y/MeV);
-// }
-
-// //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
- 
-// void LXeDetectorConstruction::SetWLSScintYield(G4double y) {
-//   fMPTPStyrene->AddConstProperty("SCINTILLATIONYIELD",y/MeV);
-// }
-
-// //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-
-// void LXeDetectorConstruction::SetSaveThreshold(G4int save){
-// /*Sets the save threshold for the random number seed. If the number of photons
-// generated in an event is lower than this, then save the seed for this event
-// in a file called run###evt###.rndm
-// */
-//   fSaveThreshold=save;
-//   G4RunManager::GetRunManager()->SetRandomNumberStore(true);
-// }
+void QuLGDetectorConstruction::SetGunPosY(G4double ival)
+{
+  if(ival < 1){
+    G4cout << "\n ---> Warning for SetGunPosY: Not set!" << G4endl;
+    return;
+  }
+  fGunPosY = ival;
+}
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

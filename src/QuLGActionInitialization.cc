@@ -12,7 +12,7 @@
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 QuLGActionInitialization::QuLGActionInitialization(
-   const QuLGDetectorConstruction* det)
+   QuLGDetectorConstruction* det)
   : G4VUserActionInitialization(), fDetector(det)
 {}
 
@@ -32,7 +32,8 @@ void QuLGActionInitialization::BuildForMaster() const
 
 void QuLGActionInitialization::Build() const
 {
-  SetUserAction(new QuLGPrimaryGeneratorAction());
+  QuLGPrimaryGeneratorAction *prim = new QuLGPrimaryGeneratorAction(fDetector);
+  SetUserAction(prim);
 
   QuLGEventAction* eventAction = new QuLGEventAction(fDetector);
   SetUserAction(eventAction);

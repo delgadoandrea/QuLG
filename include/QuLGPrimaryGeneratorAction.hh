@@ -7,12 +7,13 @@
 class G4ParticleGun;
 class G4Event;
 class QuLGPrimaryGeneratorMessenger;
+class QuLGDetectorConstruction;
 
 class QuLGPrimaryGeneratorAction : public G4VUserPrimaryGeneratorAction
 {
   public:
 
-    QuLGPrimaryGeneratorAction();
+    QuLGPrimaryGeneratorAction(QuLGDetectorConstruction*);
     virtual ~QuLGPrimaryGeneratorAction();
  
   public:
@@ -27,6 +28,7 @@ class QuLGPrimaryGeneratorAction : public G4VUserPrimaryGeneratorAction
 
     G4ParticleGun* fParticleGun;
     QuLGPrimaryGeneratorMessenger* fGunMessenger;
+    QuLGDetectorConstruction* fDetector;
 
 };
 

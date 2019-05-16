@@ -11,6 +11,7 @@
 
 class G4VPhysicalVolume;
 class G4LogicalVolume;
+class QuLGDetectorMessenger;
 
 /// Detector construction class to define materials and geometry.
 
@@ -25,15 +26,20 @@ class QuLGDetectorConstruction : public G4VUserDetectorConstruction
 
     void SetDefaults();
     
-    //G4LogicalVolume* GetScoringVolume() const { return fScoringVolume; }
+    void SetGunPosX(G4double);
+    void SetGunPosY(G4double);    
 
-  //protected:
-    //G4LogicalVolume*  fScoringVolume;
+    G4double GetGunPosX() const   {return fGunPosX;};
+    G4double GetGunPosY() const   {return fGunPosY;};
 
    private:
-   	   //Sensitive Detectors
-    //G4Cache<QuLGScintSD*> fScint_SD;
+
     G4Cache<QuLGPMTSD*> fPmt_SD; //Right
+
+    G4double  fGunPosX;
+    G4double  fGunPosY;    
+    
+    QuLGDetectorMessenger* fDetectorMessenger;
 
 };
 

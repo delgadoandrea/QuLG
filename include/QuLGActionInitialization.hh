@@ -11,7 +11,7 @@ class QuLGDetectorConstruction;
 class QuLGActionInitialization : public G4VUserActionInitialization
 {
   public:
-    QuLGActionInitialization(const QuLGDetectorConstruction* det);
+    QuLGActionInitialization(QuLGDetectorConstruction*);
     virtual ~QuLGActionInitialization();
 
     virtual void BuildForMaster() const;
@@ -19,7 +19,7 @@ class QuLGActionInitialization : public G4VUserActionInitialization
 
   private:
 
-    const QuLGDetectorConstruction* fDetector;
+    QuLGDetectorConstruction* fDetector;
 };
 
 #endif

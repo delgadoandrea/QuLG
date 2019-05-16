@@ -6,7 +6,7 @@
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 QuLGHistoManager::QuLGHistoManager()
-  : fFileName("QuLG")
+  : fFileName("QuLG.root")
 {
   Book();
 }
@@ -56,4 +56,5 @@ void QuLGHistoManager::Book()
       CreateH1("h" + histogram.first, histogram.second, nbins, vmin, vmax);
     analysisManager->SetH1Activation(ih, false);
   }
+  analysisManager->CreateH2("test", "test", 20,-10.,10., 20,-10.,10.);
 }

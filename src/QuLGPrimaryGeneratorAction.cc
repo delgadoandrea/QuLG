@@ -1,5 +1,6 @@
 #include "QuLGPrimaryGeneratorAction.hh"
 #include "QuLGPrimaryGeneratorMessenger.hh"
+#include "QuLGDetectorConstruction.hh"
 
 #include "G4Event.hh"
 #include "G4ParticleGun.hh"
@@ -11,7 +12,9 @@
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-QuLGPrimaryGeneratorAction::QuLGPrimaryGeneratorAction(){
+QuLGPrimaryGeneratorAction::QuLGPrimaryGeneratorAction(QuLGDetectorConstruction* detector)
+:G4VUserPrimaryGeneratorAction(), fDetector(detector)
+{
   G4int n_particle = 1;
   fParticleGun = new G4ParticleGun(n_particle);
 
@@ -35,11 +38,13 @@ QuLGPrimaryGeneratorAction::QuLGPrimaryGeneratorAction(){
 
 QuLGPrimaryGeneratorAction::~QuLGPrimaryGeneratorAction(){
     delete fParticleGun;
+    delete fGunMessenger;
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 void QuLGPrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent){
+  fParticleGun->SetParticlePosition(G4ThreeVector(fDetector->GetGunPosX() , fDetector->GetGunPosY(), 0.0*cm));
   fParticleGun->GeneratePrimaryVertex(anEvent);
 }
 

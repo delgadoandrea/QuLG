@@ -21,7 +21,7 @@ class QuLGEventMessenger: public G4UImessenger
   private:
 
     QuLGEventAction*      fQuLGEvent;
-    QuLGPrimaryGeneratorMessenger* fPrimaryGenerator; 
+    //QuLGPrimaryGeneratorMessenger* fPrimaryGenerator; 
     G4UIcmdWithAnInteger*  fVerboseCmd;
     G4UIcmdWithAnInteger*  fPmtThresholdCmd;
     G4UIcmdWithABool*      fForceDrawPhotonsCmd;
