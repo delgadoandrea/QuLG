@@ -99,6 +99,14 @@ void QuLGEventAction::EndOfEventAction(const G4Event* anEvent){
     //Gather info from all PMTs
     for(G4int i=0;i<pmts;i++){
       fHitCount += (*pmtHC)[i]->GetPhotonCount();
+      // get hit position, local and global time
+      if((*pmtHC)[i]->GetPhotonCount()>0){
+        G4AnalysisManager::Instance()->FillH2(1,((*pmtHC)[i]->GetPMTPos().getX())/10.,((*pmtHC)[i]->GetPMTPos().getY())/10.);
+        G4AnalysisManager::Instance()->FillH1(8, (*pmtHC)[i]->GetLocalTime());
+        G4AnalysisManager::Instance()->FillH1(9, (*pmtHC)[i]->GetGlobalTime());
+        G4AnalysisManager::Instance()->FillH1(10, (*pmtHC)[i]->GetDT());
+
+      }
       //reconPos+=(*pmtHC)[i]->GetPMTPos()*(*pmtHC)[i]->GetPhotonCount();
       if((*pmtHC)[i]->GetPhotonCount()>=fPMTThreshold){
         fPMTsAboveThreshold++;
@@ -111,8 +119,9 @@ void QuLGEventAction::EndOfEventAction(const G4Event* anEvent){
     G4AnalysisManager::Instance()->FillH1(1, fHitCount);
     G4AnalysisManager::Instance()->FillH1(2, fPMTsAboveThreshold);
 
-    if(fHitCount>0)G4AnalysisManager::Instance()->FillH2(0,fDetector->GetGunPosX()/10.,fDetector->GetGunPosY()/10.);
-
+    if(fHitCount>0){
+      G4AnalysisManager::Instance()->FillH2(0,fDetector->GetGunPosX()/10.,fDetector->GetGunPosY()/10.);
+    }
     pmtHC->DrawAllHits();
   }
 

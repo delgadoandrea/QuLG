@@ -41,6 +41,11 @@ QuLGDetectorMessenger::QuLGDetectorMessenger(QuLGDetectorConstruction* detector)
   fGunPosYCmd->SetDefaultUnit("cm");  
   fGunPosYCmd->SetGuidance("Set particle gun y-position");
   fGunPosYCmd->AvailableForStates(G4State_PreInit,G4State_Idle);
+
+  fGunPosZCmd = new G4UIcmdWithADoubleAndUnit("/QuLG/detector/gunPosZ", this);
+  fGunPosZCmd->SetDefaultUnit("cm");  
+  fGunPosZCmd->SetGuidance("Set particle gun Z-position");
+  fGunPosZCmd->AvailableForStates(G4State_PreInit,G4State_Idle);
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -50,6 +55,8 @@ QuLGDetectorMessenger::~QuLGDetectorMessenger()
   delete fDimensionsCmd;
   delete fGunPosXCmd;
   delete fGunPosYCmd;
+  delete fGunPosZCmd;
+
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -60,8 +67,12 @@ void QuLGDetectorMessenger::SetNewValue(G4UIcommand* command, G4String newValue)
     fDetector->SetGunPosX(fGunPosXCmd->GetNewDoubleValue(newValue));
 
   } 
-  else if( command == fGunPosYCmd){
+  if( command == fGunPosYCmd){
     fDetector->SetGunPosY(fGunPosYCmd->GetNewDoubleValue(newValue));
+
+  } 
+  if( command == fGunPosZCmd){
+    fDetector->SetGunPosZ(fGunPosZCmd->GetNewDoubleValue(newValue));
 
   } 
     //G4RunManager::GetRunManager()->ReinitializeGeometry(); //Add here this line

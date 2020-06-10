@@ -47,6 +47,8 @@ QuLGDetectorConstruction::QuLGDetectorConstruction()
 {
   fGunPosX = 0.0;
   fGunPosY = 0.0;
+  fGunPosZ = 0.0;
+
   fDetectorMessenger = new QuLGDetectorMessenger(this);
 
 }
@@ -282,15 +284,14 @@ G4VPhysicalVolume* QuLGDetectorConstruction::Construct(){
                      false,                   //no boolean operation
                      0,                       //copy number
                      checkOverlaps); 
-   //if(npm==1)new G4PVPlacement(pmt_flip,                       //no rotation
-   //                  {0,0,-scint_height/2. - pmtbox_height/2. - box_front_cap_thick },                    //at position
-   //                  m_Hexagone_log,             //its logical volume
-   //                  "PMT_main_log_"+to_str(npm+1),                //its name
-   //                  logicWorld,                //its mother  volume
-   //                  false,                   //no boolean operation
-   //                  0,                       //copy number
-   //                  checkOverlaps);
-    //}
+   new G4PVPlacement(pmt_flip,                       //no rotation
+                    {0,0,-scint_height/2. - pmtbox_height/2. - box_front_cap_thick },                    //at position
+                    m_Hexagone_log,             //its logical volume
+                    "PMT_main_log_2",                //its name
+                    logicWorld,                //its mother  volume
+                    false,                   //no boolean operation
+                    0,                       //copy number
+                    checkOverlaps);
    //----------------------------------------------------------------------------------------------------------------------
    // Oil volume
    //---------------------------------------------------------------------------------------------------------------------- 
@@ -418,6 +419,16 @@ void QuLGDetectorConstruction::SetGunPosY(G4double ival)
   //  return;
   //}
   fGunPosY = ival;
+}
+
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+void QuLGDetectorConstruction::SetGunPosZ(G4double ival)
+{
+  //if(ival < 1){
+  //  G4cout << "\n ---> Warning for SetGunPosY: Not set!" << G4endl;
+  //  return;
+  //}
+  fGunPosZ = ival;
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
