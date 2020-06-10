@@ -43,11 +43,18 @@ class QuLGPMTHit : public G4VHit
     inline void SetPMTPhysVol(G4VPhysicalVolume* physVol){this->fPhysVol=physVol;}
     inline G4VPhysicalVolume* GetPMTPhysVol(){return fPhysVol;}
 
-    //inline void SetPMTPos(G4double x,G4double y,G4double z){
-    //  fPos=G4ThreeVector(x,y,z);
-    //}
+    inline void SetPMTPos(G4ThreeVector pos){this->fPos=pos;}
+    inline G4ThreeVector GetPMTPos(){return fPos;}
+    
     inline void SetPMTEnergy(G4double e){fPhotEnergy = e;}
     inline G4double GetPhotEnergy(){return fPhotEnergy;}
+    // hit time functions
+    void SetGlobalTime(G4double val) { fGlobalTime = val; }
+    G4double GetGlobalTime() const { return fGlobalTime; }  
+    void SetLocalTime(G4double val) { fLocalTime = val; }
+    G4double GetLocalTime() const { return fLocalTime; }  
+    void SetDT(G4double val) { fdt = val; }
+    G4double GetDT() const { return fdt; }  
  
     //inline G4ThreeVector GetPMTPos(){return fPos;}
 
@@ -59,6 +66,11 @@ class QuLGPMTHit : public G4VHit
     G4VPhysicalVolume* fPhysVol;
     G4double fPhotEnergy;
     G4bool fDrawit;
+    G4int fId;
+    G4double fGlobalTime;
+    G4double fLocalTime;
+    G4double fdt;
+
 
 };
 

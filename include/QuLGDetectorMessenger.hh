@@ -30,6 +30,8 @@ class QuLGDetectorMessenger: public G4UImessenger
     G4UIcmdWith3VectorAndUnit*   fDimensionsCmd;
     G4UIcmdWithADoubleAndUnit*          fGunPosXCmd;
     G4UIcmdWithADoubleAndUnit*          fGunPosYCmd;
+    G4UIcmdWithADoubleAndUnit*          fGunPosZCmd;
+
 };
 
 #endif
