@@ -11,9 +11,13 @@ G4ThreadLocal G4Allocator<QuLGPMTHit>* QuLGPMTHitAllocator=0;
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 QuLGPMTHit::QuLGPMTHit()
-  : fPmtNumber(-1),fPhotons(0),fPhysVol(nullptr),fDrawit(false),fPhotEnergy(0.0) {}
+  :  fDrawit(false),fPhysVol(nullptr),fPmtNumber(-1),fPhotons(0), fPhotEnergy(0.0),fGlobalTime(0.0), fLocalTime(0.0), fdt(0.0) {}
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+// QuLGPMTHit::QuLGPMTHit(G4double gt,G4double lt)//
+//   : fGlobalTime(gt), fLocalTime(lt) {}
+
+// //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 QuLGPMTHit::~QuLGPMTHit() {}
 
@@ -24,6 +28,9 @@ QuLGPMTHit::QuLGPMTHit(const QuLGPMTHit &right) : G4VHit()
   fPmtNumber=right.fPmtNumber;
   fPhotons=right.fPhotons;
   fPhysVol=right.fPhysVol;
+  fGlobalTime=right.fGlobalTime;
+  fLocalTime=right.fLocalTime;
+  fdt=right.fdt;
   fPhotEnergy=right.fPhotEnergy;
   fDrawit=right.fDrawit;
 }
@@ -36,6 +43,10 @@ const QuLGPMTHit& QuLGPMTHit::operator=(const QuLGPMTHit &right){
   fPhysVol=right.fPhysVol;
   fPhotEnergy=right.fPhotEnergy;
   fDrawit=right.fDrawit;
+  fGlobalTime=right.fGlobalTime;
+  fLocalTime=right.fLocalTime;
+  fdt=right.fdt;
+
   return *this;
 }
 

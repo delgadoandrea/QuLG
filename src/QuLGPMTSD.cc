@@ -50,24 +50,25 @@ G4bool QuLGPMTSD::ProcessHits(G4Step* ,G4TouchableHistory* ){
 //PostStepPoint because the hit is generated manually when the photon is
 //absorbed by the photocathode
 
-G4bool QuLGPMTSD::ProcessHits_constStep(const G4Step* aStep,
-                                       G4TouchableHistory* ){
+G4bool QuLGPMTSD::ProcessHits_constStep(const G4Step* aStep,G4TouchableHistory* ){
   G4cout << "Processing hits! " << G4endl;
-
   //need to know if this is an optical photon
   if(aStep->GetTrack()->GetDefinition()
      != G4OpticalPhoton::OpticalPhotonDefinition()) return false;
- 
   //User replica number 1 since photocathode is a daughter volume
   //to the pmt which was replicated
-  G4int pmtNumber=
-    aStep->GetPostStepPoint()->GetTouchable()->GetReplicaNumber(1);
-  G4VPhysicalVolume* physVol=
-    aStep->GetPostStepPoint()->GetTouchable()->GetVolume(1);
+  G4int pmtNumber=aStep->GetPostStepPoint()->GetTouchable()->GetReplicaNumber(1);//PMT number
+  G4VPhysicalVolume* physVol=aStep->GetPostStepPoint()->GetTouchable()->GetVolume(1);//physical volume of sensitive detector
     //aStep->GetTrack()->GetVolume();//->GetName();
-  G4double ePhoton = 
-    aStep->GetPostStepPoint()->GetKineticEnergy();
-    
+  G4double ePhoton = aStep->GetPostStepPoint()->GetKineticEnergy();// kinetic energy of optical photon
+  G4ThreeVector pos=aStep->GetPostStepPoint()->GetPosition(); // hit position on PMT
+  G4StepPoint* presteppoint = aStep->GetPreStepPoint();// point before 
+  G4TouchableHistory* touchable = (G4TouchableHistory*)(presteppoint->GetTouchable());
+  G4int copyNo = touchable->GetVolume()->GetCopyNo(); // This will be helpfull for the two PMT case
+  G4Track* track = aStep->GetTrack();
+  G4double hitGlobalTime = track->GetGlobalTime(); // Global time for hit
+  G4double hitLocalTime = presteppoint->GetLocalTime(); // Local time for hit
+  G4double hitDt = aStep->GetDeltaTime(); //time of flight
 
   //Find the correct hit collection
   G4int n = fPMTHitCollection->entries();
@@ -82,14 +83,22 @@ G4bool QuLGPMTSD::ProcessHits_constStep(const G4Step* aStep,
  
   if (hit == nullptr) {//this pmt wasnt previously hit in this event
     hit = new QuLGPMTHit(); //so create new hit
-
-
     hit->SetPMTNumber(pmtNumber);
     hit->SetPMTPhysVol(physVol);
     hit->SetPMTEnergy(ePhoton);
+    hit->SetPMTPos(pos);
+    hit->SetGlobalTime(hitGlobalTime);
+    hit->SetLocalTime(hitLocalTime);
+    hit->SetDT(hitDt);
     fPMTHitCollection->insert(hit);
-    //hit->SetPMTPos((*fPMTPositionsX)[pmtNumber],(*fPMTPositionsY)[pmtNumber],
-    //               (*fPMTPositionsZ)[pmtNumber]);
+  }
+  else{// if the hit had been previoulsy hit in this event, then take earlier time
+    if (hit->GetGlobalTime()>hitGlobalTime){ 
+      hit->SetGlobalTime(hitGlobalTime); 
+    }
+    if (hit->GetLocalTime()>hitLocalTime){ 
+      hit->SetLocalTime(hitLocalTime); 
+    }
   }
 
   hit->IncPhotonCount(); //increment hit for the selected pmt

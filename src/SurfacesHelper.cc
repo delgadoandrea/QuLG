@@ -133,7 +133,7 @@ SurfacesHelper::SurfacesHelper() {
 
         surf->SetType(dielectric_LUT);
         surf->SetModel(LUT);
-        surf->SetFinish(polishedvm2000air);
+        surf->SetFinish(polishedtyvekair);
     }
 
     FEP5mil = new G4OpticalSurface("FEP5mil",unified,ground,dielectric_dielectric);
