@@ -106,7 +106,7 @@ G4bool QuLGPMTSD::ProcessHits_constStep(const G4Step* aStep,G4TouchableHistory* 
   hit->IncPhotonCount(); //increment hit for the selected pmt
   hit->AddGlobalTime(hit->GetGlobalTime());
   hit->AddLocalTime(hit->GetLocalTime());
-  hit->AddCombinedTime(hit->GetCombinedTime());
+  hit->AddCombinedTime(hit->GetGlobalTime()+ hit->GetLocalTime());
   
   /*if(!QuLGDetectorConstruction::GetSphereOn()){
     hit->SetDrawit(true);

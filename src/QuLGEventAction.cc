@@ -107,10 +107,10 @@ void QuLGEventAction::EndOfEventAction(const G4Event* anEvent){
         std::vector<G4double> CurHit_Lt = (*pmtHC)[i]->GetLocalTimes(); // current event local times
         std::vector<G4double> CurHit_Ct = (*pmtHC)[i]->GetCombinedTimes(); // current event combined times
         for(int j=0;j<CurHit_Gt.size();j++){
-          G4AnalysisManager::Instance()->FillH1(8, CurHit_Gt[i]);
-          G4AnalysisManager::Instance()->FillH1(9, CurHit_Lt[i]);
+          G4AnalysisManager::Instance()->FillH1(8, CurHit_Gt[j]);
+          G4AnalysisManager::Instance()->FillH1(9, CurHit_Lt[j]);
           // G4AnalysisManager::Instance()->FillH1(10, CurHit_Gt[i]);
-          G4AnalysisManager::Instance()->FillH1(11, CurHit_Ct[i]);
+          G4AnalysisManager::Instance()->FillH1(11, CurHit_Ct[j]);
         }
         // G4AnalysisManager::Instance()->FillH1(8, (*pmtHC)[i]->GetLocalTime());
         // G4AnalysisManager::Instance()->FillH1(9, (*pmtHC)[i]->GetGlobalTime());

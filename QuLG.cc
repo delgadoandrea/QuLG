@@ -1,3 +1,7 @@
+#include <G4Positron.hh>
+#include <G4eplusAnnihilation.hh>
+#include <OrthoPositronium.hh>
+#include <PhysicsList.hh>
 #include "G4Types.hh"
 #include "G4RunManager.hh"
 #include "G4UImanager.hh"
@@ -28,8 +32,8 @@ int main(int argc, char** argv)
   runManager->SetUserInitialization(det);
 
   // G4VModularPhysicsList* physicsList = new FTFP_BERT; //TODO Compare to PROSPECT's Physics List
-  G4VModularPhysicsList* physicsList = new QGSP_BERT_HP; // PG4 physics list 
-  physicsList->ReplacePhysics(new G4EmStandardPhysics_option4());
+  G4VModularPhysicsList* physicsList = new PhysicsList; // PG4 physics list
+ // physicsList->ReplacePhysics(new G4EmStandardPhysics_option4());
   // G4ProductionCutsTable::GetProductionCutsTable()->SetEnergyRange(250*eV, 1*GeV);
   // double rangecut = 1*um;
   // SetCutValue(rangecut, "gamma");
