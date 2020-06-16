@@ -28,10 +28,8 @@ class QuLGDetectorMessenger: public G4UImessenger
     G4UIdirectory*               fDetectorDir;
     G4UIdirectory*               fVolumesDir;
     G4UIcmdWith3VectorAndUnit*   fDimensionsCmd;
-    G4UIcmdWithADoubleAndUnit*          fGunPosXCmd;
-    G4UIcmdWithADoubleAndUnit*          fGunPosYCmd;
-    G4UIcmdWithADoubleAndUnit*          fGunPosZCmd;
-
+    G4UIcmdWithADouble*          fGunPosXCmd;
+    G4UIcmdWithADouble*          fGunPosYCmd;
 };
 
 #endif

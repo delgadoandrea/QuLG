@@ -66,7 +66,8 @@ void QuLGEventAction::BeginOfEventAction(const G4Event*) {
 void QuLGEventAction::EndOfEventAction(const G4Event* anEvent){
 
   G4TrajectoryContainer* trajectoryContainer=anEvent->GetTrajectoryContainer();
- 
+  G4int size_v=0;
+  std::vector<G4double> temp;
   G4int n_trajectories = 0;
   if (trajectoryContainer) n_trajectories = trajectoryContainer->entries();
 
@@ -96,7 +97,7 @@ void QuLGEventAction::EndOfEventAction(const G4Event* anEvent){
   if(pmtHC){
     //G4ThreeVector reconPos(0.,0.,0.);
     G4int pmts=pmtHC->entries();
-    //Gather info from hits in hit collection
+    //Gather info from pmts
     for(G4int i=0;i<pmts;i++){
       fHitCount += (*pmtHC)[i]->GetPhotonCount();
       // get hit position, local and global time
@@ -106,11 +107,20 @@ void QuLGEventAction::EndOfEventAction(const G4Event* anEvent){
         std::vector<G4double> CurHit_Gt = (*pmtHC)[i]->GetGlobalTimes(); //current event global times
         std::vector<G4double> CurHit_Lt = (*pmtHC)[i]->GetLocalTimes(); // current event local times
         std::vector<G4double> CurHit_Ct = (*pmtHC)[i]->GetCombinedTimes(); // current event combined times
-        for(int j=0;j<CurHit_Gt.size();j++){
-          G4AnalysisManager::Instance()->FillH1(8, CurHit_Gt[i]);
-          G4AnalysisManager::Instance()->FillH1(9, CurHit_Lt[i]);
+        temp=CurHit_Gt;
+        size_v = CurHit_Ct.size();
+        for(std::string::size_type j=0;j<CurHit_Gt.size();j++){
+          G4cout<<"LOCAL TIMES:"<<G4endl;
+          G4AnalysisManager::Instance()->FillH1(8, CurHit_Lt[j]);
+          G4cout<<CurHit_Lt[j]<<G4endl;
+          G4cout<<"GLOBAL TIMES:"<<G4endl;
+          G4AnalysisManager::Instance()->FillH1(9, CurHit_Gt[j]);
+          G4cout<<CurHit_Gt[j]<<G4endl;
+          G4cout<<"COMBINED TIMES:"<<G4endl;
           // G4AnalysisManager::Instance()->FillH1(10, CurHit_Gt[i]);
-          G4AnalysisManager::Instance()->FillH1(11, CurHit_Ct[i]);
+          G4AnalysisManager::Instance()->FillH1(11, CurHit_Ct[j]);
+          G4cout<<CurHit_Ct[j]<<G4endl;
+
         }
         // G4AnalysisManager::Instance()->FillH1(8, (*pmtHC)[i]->GetLocalTime());
         // G4AnalysisManager::Instance()->FillH1(9, (*pmtHC)[i]->GetGlobalTime());
@@ -153,6 +163,10 @@ void QuLGEventAction::EndOfEventAction(const G4Event* anEvent){
            << (fPhotonCount_Scint + fPhotonCount_Ceren -
                 fAbsorptionCount - fHitCount - fBoundaryAbsorptionCount)
            << G4endl;
+    G4cout << "Size of vector holding times:"<<size_v<<   G4endl; 
+    // for(int i=0;i< temp.size();i++){      
+    //     G4cout<< temp[1] <<   G4endl; 
+    // }
   //}
 
   // update the run statistics

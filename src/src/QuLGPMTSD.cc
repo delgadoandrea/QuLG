@@ -62,9 +62,14 @@ G4bool QuLGPMTSD::ProcessHits_constStep(const G4Step* aStep,G4TouchableHistory* 
     //aStep->GetTrack()->GetVolume();//->GetName();
   G4double ePhoton = aStep->GetPostStepPoint()->GetKineticEnergy();// kinetic energy of optical photon
   G4ThreeVector pos=aStep->GetPostStepPoint()->GetPosition(); // hit position on PMT
-  G4StepPoint* presteppoint = aStep->GetPreStepPoint();// point before 
-  G4TouchableHistory* touchable = (G4TouchableHistory*)(presteppoint->GetTouchable());
+  G4StepPoint* postSteppoint = aStep->GetPostStepPoint();// point before 
+  G4TouchableHistory* touchable = (G4TouchableHistory*)(postSteppoint->GetTouchable());
   G4int copyNo = touchable->GetVolume()->GetCopyNo(); // This will be helpfull for the two PMT case
+  // G4double hitGlobalTime = postSteppoint->GetGlobalTime(); // Global time for hit
+  // G4double hitLocalTime = postSteppoint->GetLocalTime(); // Local time for hit
+  // G4double hitCombinedTime = hitGlobalTime + hitLocalTime; // Local + Global Time
+  // G4double hitDt = aStep->GetDeltaTime(); //time of flight
+
   G4Track* track = aStep->GetTrack();
   G4double hitGlobalTime = track->GetGlobalTime(); // Global time for hit
   G4double hitLocalTime = track->GetLocalTime(); // Local time for hit
@@ -106,7 +111,7 @@ G4bool QuLGPMTSD::ProcessHits_constStep(const G4Step* aStep,G4TouchableHistory* 
   hit->IncPhotonCount(); //increment hit for the selected pmt
   hit->AddGlobalTime(hit->GetGlobalTime());
   hit->AddLocalTime(hit->GetLocalTime());
-  hit->AddCombinedTime(hit->GetCombinedTime());
+  hit->AddCombinedTime(hit->GetGlobalTime() + hit->GetLocalTime());
   
   /*if(!QuLGDetectorConstruction::GetSphereOn()){
     hit->SetDrawit(true);

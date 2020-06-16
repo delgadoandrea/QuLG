@@ -24,9 +24,9 @@ QuLGPrimaryGeneratorAction::QuLGPrimaryGeneratorAction(QuLGDetectorConstruction*
   fGunMessenger = new QuLGPrimaryGeneratorMessenger(this);
   G4ParticleTable* particleTable = G4ParticleTable::GetParticleTable();
   G4String particleName;
-  // fParticleGun->SetParticleDefinition(particleTable->FindParticle(particleName="gamma"));
-  //Default energy,position,momentum
-  // fParticleGun->SetParticleEnergy(CLHEP::electron_mass_c2);
+  fParticleGun->SetParticleDefinition(particleTable->FindParticle(particleName="e+"));
+  // Default energy,position,momentum
+  fParticleGun->SetParticleEnergy(CLHEP::electron_mass_c2);
   // G4double angle = G4UniformRand() * 360.0*deg;
   // G4double cosTheta = -1.0 + 2.0*G4UniformRand();
   // G4double phi = 2*3.14*G4UniformRand();
@@ -35,6 +35,19 @@ QuLGPrimaryGeneratorAction::QuLGPrimaryGeneratorAction(QuLGDetectorConstruction*
   // G4double ky = sinTheta*std::sin(phi);
   // G4double kz = cosTheta;
   // fParticleGun -> SetParticleMomentumDirection(G4ThreeVector(kx,ky,kz));
+    G4double px, py, pz;
+    G4double cs, sn, phi;  
+    cs    =  CLHEP::RandFlat::shoot(-1.,1.);
+    sn    =  std::sqrt((1.0-cs)*(1.0+cs));
+    phi   =  CLHEP::RandFlat::shoot(0., CLHEP::twopi);
+    px    =  sn*std::cos(phi);
+    py    =  sn*std::sin(phi);
+    pz    =  cs;
+  fParticleGun -> SetParticleMomentumDirection(G4ThreeVector(px,py,pz));
+  fParticleGun->SetParticlePolarization(G4ThreeVector(px,py,pz));
+    // gamma[0]->SetMomentumDirection(G4ThreeVector(px, py, pz));
+    // // gamma[0]->SetMomentumDirection(G4ThreeVector(0, 0, 1));
+    // gamma[0]->SetPolarization(G4ThreeVector(px, py, pz));
   // fParticleGun->SetParticleMomentumDirection(G4ThreeVector(0.,0.,1.)); 
 
   ///////////////////////////////////////////////// 
@@ -54,7 +67,7 @@ QuLGPrimaryGeneratorAction::~QuLGPrimaryGeneratorAction(){
 
 void QuLGPrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent){
   fParticleGun->SetParticlePosition(G4ThreeVector(fDetector->GetGunPosX() , fDetector->GetGunPosY(), fDetector->GetGunPosZ()));
-  // fParticleGun->GeneratePrimaryVertex(anEvent);
+  fParticleGun->GeneratePrimaryVertex(anEvent);
     // G4ThreeVector vPos;
     // if(positionFlag == Top)	{
     //     static G4ThreeVector Temp(0.0,0.0,49.9*cm);
@@ -78,37 +91,37 @@ void QuLGPrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent){
     //     vPos = Temp;
     // }
    
-    G4PrimaryVertex* vertex = new G4PrimaryVertex();
-    G4PrimaryParticle* gamma[2]={0,0};
-    G4ParticleDefinition* pD = particleTable->FindParticle("gamma");
-    // fParticleGun->SetParticleDefinition(particleTable->FindParticle(particleName="gamma"));
-    gamma[0] = new G4PrimaryParticle(pD);
-    gamma[1] = new G4PrimaryParticle(pD);
-    gamma[0]->SetMass(0.);
-    gamma[1]->SetMass(0.);
-    gamma[0]->SetCharge(0.);
-    gamma[1]->SetCharge(0.);
-    gamma[0]->SetKineticEnergy(CLHEP::electron_mass_c2);
-    gamma[1]->SetKineticEnergy(CLHEP::electron_mass_c2);
-    G4double px, py, pz;
-    G4double cs, sn, phi;
-    cs    =  CLHEP::RandFlat::shoot(-1.,1.);
-    sn    =  std::sqrt((1.0-cs)*(1.0+cs));
-    phi   =  CLHEP::RandFlat::shoot(0., CLHEP::twopi);
-    px    =  sn*std::cos(phi);
-    py    =  sn*std::sin(phi);
-    pz    =  cs;
-    gamma[0]->SetMomentumDirection(G4ThreeVector(px, py, pz));
-    // gamma[0]->SetMomentumDirection(G4ThreeVector(0, 0, 1));
-    gamma[0]->SetPolarization(G4ThreeVector(px, py, pz));
-    gamma[1]->SetMomentumDirection(G4ThreeVector(-1.*px, -1.*py, -1.*pz));
-    // gamma[1]->SetMomentumDirection(G4ThreeVector(0, 0, -1));
-    gamma[1]->SetPolarization(G4ThreeVector(px, py, pz));
-    vertex->SetPrimary(gamma[0]);
-    vertex->SetPrimary(gamma[1]);
-    anEvent->AddPrimaryVertex(vertex);
-    fParticleGun->GeneratePrimaryVertex(anEvent);
-    // if(particleFlag == gamma2){
+    // G4PrimaryVertex* vertex = new G4PrimaryVertex();
+    // G4PrimaryParticle* gamma[2]={0,0};
+    // G4ParticleDefinition* pD = particleTable->FindParticle("gamma");
+    // // fParticleGun->SetParticleDefinition(particleTable->FindParticle(particleName="gamma"));
+    // gamma[0] = new G4PrimaryParticle(pD);
+    // gamma[1] = new G4PrimaryParticle(pD);
+    // gamma[0]->SetMass(0.);
+    // gamma[1]->SetMass(0.);
+    // gamma[0]->SetCharge(0.);
+    // gamma[1]->SetCharge(0.);
+    // gamma[0]->SetKineticEnergy(CLHEP::electron_mass_c2);
+    // gamma[1]->SetKineticEnergy(CLHEP::electron_mass_c2);
+    // G4double px, py, pz;
+    // G4double cs, sn, phi;
+    // cs    =  CLHEP::RandFlat::shoot(-1.,1.);
+    // sn    =  std::sqrt((1.0-cs)*(1.0+cs));
+    // phi   =  CLHEP::RandFlat::shoot(0., CLHEP::twopi);
+    // px    =  sn*std::cos(phi);
+    // py    =  sn*std::sin(phi);
+    // pz    =  cs;
+    // gamma[0]->SetMomentumDirection(G4ThreeVector(px, py, pz));
+    // // gamma[0]->SetMomentumDirection(G4ThreeVector(0, 0, 1));
+    // gamma[0]->SetPolarization(G4ThreeVector(px, py, pz));
+    // gamma[1]->SetMomentumDirection(G4ThreeVector(-1.*px, -1.*py, -1.*pz));
+    // // gamma[1]->SetMomentumDirection(G4ThreeVector(0, 0, -1));
+    // gamma[1]->SetPolarization(G4ThreeVector(px, py, pz));
+    // vertex->SetPrimary(gamma[0]);
+    // vertex->SetPrimary(gamma[1]);
+    // anEvent->AddPrimaryVertex(vertex);
+    // fParticleGun->GeneratePrimaryVertex(anEvent);
+    // // if(particleFlag == gamma2){
     //     G4PrimaryParticle* particle[2]={0,0};
     //     GenerateTwoGamma(particle);
     //     vertex->SetPrimary(particle[0]);

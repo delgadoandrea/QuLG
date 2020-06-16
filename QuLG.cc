@@ -4,6 +4,7 @@
 #include "G4String.hh"
 
 #include "FTFP_BERT.hh"
+#include "QGSP_BERT_HP.hh"
 #include "G4OpticalPhysics.hh"
 #include "G4EmStandardPhysics_option4.hh"
 
@@ -26,8 +27,15 @@ int main(int argc, char** argv)
   QuLGDetectorConstruction* det = new QuLGDetectorConstruction();
   runManager->SetUserInitialization(det);
 
-  G4VModularPhysicsList* physicsList = new FTFP_BERT; //TODO Compare to PROSPECT's Physics List
+  // G4VModularPhysicsList* physicsList = new FTFP_BERT; //TODO Compare to PROSPECT's Physics List
+  G4VModularPhysicsList* physicsList = new QGSP_BERT_HP; // PG4 physics list 
   physicsList->ReplacePhysics(new G4EmStandardPhysics_option4());
+  // G4ProductionCutsTable::GetProductionCutsTable()->SetEnergyRange(250*eV, 1*GeV);
+  // double rangecut = 1*um;
+  // SetCutValue(rangecut, "gamma");
+  // SetCutValue(rangecut, "e-");
+  // SetCutValue(rangecut, "e+");
+  
   G4OpticalPhysics* opticalPhysics = new G4OpticalPhysics();
   opticalPhysics->SetWLSTimeProfile("delta");
 
@@ -41,6 +49,8 @@ int main(int argc, char** argv)
   opticalPhysics->SetTrackSecondariesFirst(kScintillation, true);
 
   physicsList->RegisterPhysics(opticalPhysics);
+  ////////////////////////////////////////////////
+
   runManager->SetUserInitialization(physicsList);
 
   runManager->SetUserInitialization(new QuLGActionInitialization(det));
