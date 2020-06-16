@@ -96,16 +96,26 @@ void QuLGEventAction::EndOfEventAction(const G4Event* anEvent){
   if(pmtHC){
     //G4ThreeVector reconPos(0.,0.,0.);
     G4int pmts=pmtHC->entries();
-    //Gather info from all PMTs
+    //Gather info from hits in hit collection
     for(G4int i=0;i<pmts;i++){
       fHitCount += (*pmtHC)[i]->GetPhotonCount();
       // get hit position, local and global time
       if((*pmtHC)[i]->GetPhotonCount()>0){
-        G4AnalysisManager::Instance()->FillH2(1,((*pmtHC)[i]->GetPMTPos().getX())/10.,((*pmtHC)[i]->GetPMTPos().getY())/10.);
-        G4AnalysisManager::Instance()->FillH1(8, (*pmtHC)[i]->GetLocalTime());
-        G4AnalysisManager::Instance()->FillH1(9, (*pmtHC)[i]->GetGlobalTime());
-        G4AnalysisManager::Instance()->FillH1(10, (*pmtHC)[i]->GetDT());
 
+        // G4AnalysisManager::Instance()->FillH2(1,((*pmtHC)[i]->GetPMTPos().getX())/10.,((*pmtHC)[i]->GetPMTPos().getY())/10.);
+        std::vector<G4double> CurHit_Gt = (*pmtHC)[i]->GetGlobalTimes(); //current event global times
+        std::vector<G4double> CurHit_Lt = (*pmtHC)[i]->GetLocalTimes(); // current event local times
+        std::vector<G4double> CurHit_Ct = (*pmtHC)[i]->GetCombinedTimes(); // current event combined times
+        for(int j=0;j<CurHit_Gt.size();j++){
+          G4AnalysisManager::Instance()->FillH1(8, CurHit_Gt[i]);
+          G4AnalysisManager::Instance()->FillH1(9, CurHit_Lt[i]);
+          // G4AnalysisManager::Instance()->FillH1(10, CurHit_Gt[i]);
+          G4AnalysisManager::Instance()->FillH1(11, CurHit_Ct[i]);
+        }
+        // G4AnalysisManager::Instance()->FillH1(8, (*pmtHC)[i]->GetLocalTime());
+        // G4AnalysisManager::Instance()->FillH1(9, (*pmtHC)[i]->GetGlobalTime());
+        // G4AnalysisManager::Instance()->FillH1(10, (*pmtHC)[i]->GetDT());
+        // G4AnalysisManager::Instance()->FillH1(11, (*pmtHC)[i]->GetCombinedTime());
       }
       //reconPos+=(*pmtHC)[i]->GetPMTPos()*(*pmtHC)[i]->GetPhotonCount();
       if((*pmtHC)[i]->GetPhotonCount()>=fPMTThreshold){
@@ -121,6 +131,7 @@ void QuLGEventAction::EndOfEventAction(const G4Event* anEvent){
 
     if(fHitCount>0){
       G4AnalysisManager::Instance()->FillH2(0,fDetector->GetGunPosX()/10.,fDetector->GetGunPosY()/10.);
+
     }
     pmtHC->DrawAllHits();
   }

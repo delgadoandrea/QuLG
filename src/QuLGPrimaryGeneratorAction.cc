@@ -24,17 +24,19 @@ QuLGPrimaryGeneratorAction::QuLGPrimaryGeneratorAction(QuLGDetectorConstruction*
   fGunMessenger = new QuLGPrimaryGeneratorMessenger(this);
   G4ParticleTable* particleTable = G4ParticleTable::GetParticleTable();
   G4String particleName;
-  fParticleGun->SetParticleDefinition(particleTable->FindParticle(particleName="gamma"));
+  // fParticleGun->SetParticleDefinition(particleTable->FindParticle(particleName="gamma"));
   //Default energy,position,momentum
-//   fParticleGun->SetParticleEnergy(5000*eV);
-//   G4double angle = G4UniformRand() * 360.0*deg;
-//   G4double cosTheta = -1.0 + 2.0*G4UniformRand();
-//   G4double phi = 2*3.14*G4UniformRand();
-//   G4double sinTheta = sqrt(1 - cosTheta*cosTheta);
-//   G4double kx = sinTheta*std::cos(phi);
-//   G4double ky = sinTheta*std::sin(phi);
-//   G4double kz = cosTheta;
-//   fParticleGun -> SetParticleMomentumDirection(G4ThreeVector(kx,ky,kz));
+  // fParticleGun->SetParticleEnergy(CLHEP::electron_mass_c2);
+  // G4double angle = G4UniformRand() * 360.0*deg;
+  // G4double cosTheta = -1.0 + 2.0*G4UniformRand();
+  // G4double phi = 2*3.14*G4UniformRand();
+  // G4double sinTheta = sqrt(1 - cosTheta*cosTheta);
+  // G4double kx = sinTheta*std::cos(phi);
+  // G4double ky = sinTheta*std::sin(phi);
+  // G4double kz = cosTheta;
+  // fParticleGun -> SetParticleMomentumDirection(G4ThreeVector(kx,ky,kz));
+  // fParticleGun->SetParticleMomentumDirection(G4ThreeVector(0.,0.,1.)); 
+
   ///////////////////////////////////////////////// 
 //   fParticleGun -> SetParticleMomentumDirection(G4ThreeVector(kx,ky,kz));
   //fParticleGun->SetParticleMomentumDirection(G4ThreeVector(std::cos(angle),std::sin(angle),0.)); 
@@ -52,7 +54,7 @@ QuLGPrimaryGeneratorAction::~QuLGPrimaryGeneratorAction(){
 
 void QuLGPrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent){
   fParticleGun->SetParticlePosition(G4ThreeVector(fDetector->GetGunPosX() , fDetector->GetGunPosY(), fDetector->GetGunPosZ()));
-//   fParticleGun->GeneratePrimaryVertex(anEvent);
+  // fParticleGun->GeneratePrimaryVertex(anEvent);
     // G4ThreeVector vPos;
     // if(positionFlag == Top)	{
     //     static G4ThreeVector Temp(0.0,0.0,49.9*cm);
@@ -97,13 +99,14 @@ void QuLGPrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent){
     py    =  sn*std::sin(phi);
     pz    =  cs;
     gamma[0]->SetMomentumDirection(G4ThreeVector(px, py, pz));
+    // gamma[0]->SetMomentumDirection(G4ThreeVector(0, 0, 1));
     gamma[0]->SetPolarization(G4ThreeVector(px, py, pz));
     gamma[1]->SetMomentumDirection(G4ThreeVector(-1.*px, -1.*py, -1.*pz));
+    // gamma[1]->SetMomentumDirection(G4ThreeVector(0, 0, -1));
     gamma[1]->SetPolarization(G4ThreeVector(px, py, pz));
     vertex->SetPrimary(gamma[0]);
     vertex->SetPrimary(gamma[1]);
     anEvent->AddPrimaryVertex(vertex);
-
     fParticleGun->GeneratePrimaryVertex(anEvent);
     // if(particleFlag == gamma2){
     //     G4PrimaryParticle* particle[2]={0,0};
@@ -153,27 +156,30 @@ void QuLGPrimaryGeneratorAction::SetOptPhotonPolar(G4double angle){
                "the particleGun is not an opticalphoton" << G4endl;
      return;
   }
-  // Isotropic momentum case
-  G4double cosTheta = -1.0 + 2.0*G4UniformRand(); // cosine of random angle theta
-  G4double phi = 2*3.14*G4UniformRand(); // angle phi
-  G4double sinTheta = sqrt(1 - cosTheta*cosTheta); // sine of random angle theta
-  G4double kx = sinTheta*std::cos(phi); // x component of momentum
-  G4double ky = sinTheta*std::sin(phi); // y component of momentum
-  G4double kz = cosTheta;// z component of momentum
-  // Define unit normal vector (perpendicular lo k vector)
-  G4double nx=1.0; // 
-  G4double ny=1.0; // 
-  G4double nz = (-(kx*nx) - (ky*ny))/(kz); //  
-  G4ThreeVector normal (nx, ny, nz);
-  normal = normal/(std::sqrt(normal*normal)); // to make it have unit length
-  G4ThreeVector kphoton = fParticleGun->GetParticleMomentumDirection(); // momentum (K) vector
-  G4ThreeVector product = normal.cross(kphoton); // find a vector perpendicular to both the normal and the k vector
-  G4double modul2       = product*product; // find its magnitude squared
-  G4ThreeVector e_perpend (0., 0., 1.); // dummy definition for perpendicular component of E field
-  if (modul2 > 0.) e_perpend = (1./std::sqrt(modul2))*product; // so that we do not divide by 0 (acutual definition of Eperp)
-  G4ThreeVector e_paralle    = e_perpend.cross(kphoton); // define Epar
-  G4ThreeVector polar = std::cos(angle)*e_paralle + std::sin(angle)*e_perpend; // polar
-  fParticleGun->SetParticlePolarization(polar);
+  
+  // Best-case scenario for momentum
+  // G4ThreeVector normal (1., 0., 0.);
+  // // Isotropic momentum case
+  // // G4double cosTheta = -1.0 + 2.0*G4UniformRand(); // cosine of random angle theta
+  // // G4double phi = 2*3.14*G4UniformRand(); // angle phi
+  // // G4double sinTheta = sqrt(1 - cosTheta*cosTheta); // sine of random angle theta
+  // // G4double kx = sinTheta*std::cos(phi); // x component of momentum
+  // // G4double ky = sinTheta*std::sin(phi); // y component of momentum
+  // // G4double kz = cosTheta;// z component of momentum
+  // // // Define unit normal vector (perpendicular lo k vector)
+  // // G4double nx=1.0; // 
+  // // G4double ny=1.0; // 
+  // // G4double nz = (-(kx*nx) - (ky*ny))/(kz); //  
+  // // G4ThreeVector normal (nx, ny, nz);
+  // normal = normal/(std::sqrt(normal*normal)); // to make it have unit length
+  // G4ThreeVector kphoton = fParticleGun->GetParticleMomentumDirection(); // momentum (K) vector
+  // G4ThreeVector product = normal.cross(kphoton); // find a vector perpendicular to both the normal and the k vector
+  // G4double modul2       = product*product; // find its magnitude squared
+  // G4ThreeVector e_perpend (0., 0., 1.); // dummy definition for perpendicular component of E field
+  // if (modul2 > 0.) e_perpend = (1./std::sqrt(modul2))*product; // so that we do not divide by 0 (acutual definition of Eperp)
+  // G4ThreeVector e_paralle    = e_perpend.cross(kphoton); // define Epar
+  // G4ThreeVector polar = std::cos(angle)*e_paralle + std::sin(angle)*e_perpend; // polar
+  // fParticleGun->SetParticlePolarization(polar);
   // // // Best case scenario, particle with momentum only along the z axis (axis of the light guide)
   // G4ThreeVector normal (1., 0., 0.);
   // G4ThreeVector kphoton = fParticleGun->GetParticleMomentumDirection();

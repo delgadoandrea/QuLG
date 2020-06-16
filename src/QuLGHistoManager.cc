@@ -58,9 +58,11 @@ void QuLGHistoManager::Book()
   }
   analysisManager->CreateH2("test", "test", 20,-10.,10., 20,-10.,10.);
   analysisManager->CreateH2("hit_pos", "test", 100,-10.,10., 100,-10.,10.);
-  analysisManager->CreateH1("Local_Time", "Local_Time", 100, 0,100);
+  analysisManager->CreateH1("Local_Time", "Local_Time", 1000, 0,100);
   analysisManager->CreateH1("Global_Time", "Global_Time", 1000, 0,100);
-  analysisManager->CreateH1("dt", "dt", 100, 0,10);
+  analysisManager->CreateH1("dt", "dt", 1000, 0,10);
+  analysisManager->CreateH1("Combined_Time", "Combined_Time", 1000, 0,100);
+
 
 
 }

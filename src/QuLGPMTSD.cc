@@ -67,7 +67,8 @@ G4bool QuLGPMTSD::ProcessHits_constStep(const G4Step* aStep,G4TouchableHistory* 
   G4int copyNo = touchable->GetVolume()->GetCopyNo(); // This will be helpfull for the two PMT case
   G4Track* track = aStep->GetTrack();
   G4double hitGlobalTime = track->GetGlobalTime(); // Global time for hit
-  G4double hitLocalTime = presteppoint->GetLocalTime(); // Local time for hit
+  G4double hitLocalTime = track->GetLocalTime(); // Local time for hit
+  G4double hitCombinedTime = hitGlobalTime + hitLocalTime; // Local + Global Time
   G4double hitDt = aStep->GetDeltaTime(); //time of flight
 
   //Find the correct hit collection
@@ -89,6 +90,7 @@ G4bool QuLGPMTSD::ProcessHits_constStep(const G4Step* aStep,G4TouchableHistory* 
     hit->SetPMTPos(pos);
     hit->SetGlobalTime(hitGlobalTime);
     hit->SetLocalTime(hitLocalTime);
+    hit->SetCombinedTime(hitCombinedTime);
     hit->SetDT(hitDt);
     fPMTHitCollection->insert(hit);
   }
@@ -100,9 +102,12 @@ G4bool QuLGPMTSD::ProcessHits_constStep(const G4Step* aStep,G4TouchableHistory* 
       hit->SetLocalTime(hitLocalTime); 
     }
   }
-
+  /////////// Store time information here
   hit->IncPhotonCount(); //increment hit for the selected pmt
- 
+  hit->AddGlobalTime(hit->GetGlobalTime());
+  hit->AddLocalTime(hit->GetLocalTime());
+  hit->AddCombinedTime(hit->GetCombinedTime());
+  
   /*if(!QuLGDetectorConstruction::GetSphereOn()){
     hit->SetDrawit(true);
     //If the sphere is disabled then this hit is automaticaly drawn
