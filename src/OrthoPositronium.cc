@@ -19,7 +19,7 @@ using namespace std;
 
 OrthoPositronium::OrthoPositronium(const G4String& name)
 //        : G4VEmProcess(name), isInitialised(false), OrthoPsMeanLifetime(3.0*ns)
-        : G4eplusAnnihilation(name), OrthoPsMeanLifetime(3.0*ns)
+        : G4eplusAnnihilation(name), OrthoPsMeanLifetime(35*ns)
 {
     theGamma = G4Gamma::Gamma();
     /*SetIntegral(true);

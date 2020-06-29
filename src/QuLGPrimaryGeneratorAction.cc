@@ -27,14 +27,6 @@ QuLGPrimaryGeneratorAction::QuLGPrimaryGeneratorAction(QuLGDetectorConstruction*
   fParticleGun->SetParticleDefinition(particleTable->FindParticle(particleName="e+"));
   //Default energy,position,momentum
   fParticleGun->SetParticleEnergy(2.0*MeV);
-  // G4double angle = G4UniformRand() * 360.0*deg;
-  // G4double cosTheta = -1.0 + 2.0*G4UniformRand();
-  // G4double phi = 2*3.14*G4UniformRand();
-  // G4double sinTheta = sqrt(1 - cosTheta*cosTheta);
-  // G4double kx = sinTheta*std::cos(phi);
-  // G4double ky = sinTheta*std::sin(phi);
-  // G4double kz = cosTheta;
-  // fParticleGun -> SetParticleMomentumDirection(G4ThreeVector(kx,ky,kz));
   // fParticleGun->SetParticleMomentumDirection(G4ThreeVector(0.,0.,1.)); 
   G4double px, py, pz;
   G4double cs, sn, phi;
@@ -43,7 +35,7 @@ QuLGPrimaryGeneratorAction::QuLGPrimaryGeneratorAction(QuLGDetectorConstruction*
   phi   =  CLHEP::RandFlat::shoot(0., CLHEP::twopi);
   px    =  sn*std::cos(phi);
   py    =  sn*std::sin(phi);
-  pz    =  cs;
+  pz    =  0;
   fParticleGun -> SetParticleMomentumDirection(G4ThreeVector(px,py,pz));
   fParticleGun->SetParticlePolarization(G4ThreeVector(px,py,pz));
   ///////////////////////////////////////////////// 
@@ -190,7 +182,7 @@ void QuLGPrimaryGeneratorAction::SetOptPhotonPolar(G4double angle){
   // G4ThreeVector e_paralle    = e_perpend.cross(kphoton); // define Epar
   // G4ThreeVector polar = std::cos(angle)*e_paralle + std::sin(angle)*e_perpend; // polar
   // fParticleGun->SetParticlePolarization(polar);
-  // // // Best case scenario, particle with momentum only along the z axis (axis of the light guide)
+  // // Best case scenario, particle with momentum only along the z axis (axis of the light guide)
   // G4ThreeVector normal (1., 0., 0.);
   // G4ThreeVector kphoton = fParticleGun->GetParticleMomentumDirection();
   // G4ThreeVector product = normal.cross(kphoton);
